@@ -1,2 +1,0 @@
-class Migration(object):
-    pass

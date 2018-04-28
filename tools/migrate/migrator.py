@@ -12,6 +12,7 @@ import os
 import datetime
 import calendar
 
+
 class Migrator(object):
 
   # -----------------------------------------------------------------------
@@ -20,10 +21,6 @@ class Migrator(object):
   def __init__(self, directory):
 
     self.directory = directory
-
-    pass
-
-
 
 
   # -----------------------------------------------------------------------
@@ -52,22 +49,13 @@ class Migrator(object):
     migrate = """
     import migrate
 
-    class CreateUsers(migrate.Migration):
+    class CreateUsers(tools.migrate.Migration):
       def up():
         self.create_table('users')
         self.string('full_name')
         self.string('email')
       def down():
         self.drop_table('users')
-
-    class AddPasswordToUsers(migrate.Migration):
-      def up():
-        self.add_column('users', 'password_hash', 'string')
-        self.add_column('users', 'password_salt', 'string')
-      def down():
-        self.remove_column('users', 'password_hash')
-        self.remove_column('users', 'password_salt')
-
 
     """
 
@@ -83,3 +71,29 @@ class Migrator(object):
     file.write(migrate)
 
     file.close()
+
+
+
+  # -----------------------------------------------------------------------
+  # 执行migrate文件
+
+  def execute(self):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

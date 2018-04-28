@@ -8,11 +8,10 @@
 # 功能：选项类
 # -------------------------------------------------------------------------
 
-from options import Options
-from migrate.migrator import Migrator
-from migrate.migration import Migration
+from tools.migrate.migrator import Migrator
+from tools.migrate.options import Options
 
-migrate = Migrator('db/migrate')
+migrate = Migrator('migrates')
 
 # python migrate.py --init
 # python migrate.py --create-migration create_users
@@ -21,6 +20,7 @@ options.add('-init', migrate.init)
 options.add('-migrate', 'migrate')
 options.add('-rollback', 'rollback')
 options.add('-create', migrate.create)
+options.add('-execute', migrate.execute)
 options.add('-remove', 'remove_migration')
 options.add('-load-schema', 'load_schema')
 options.add('-dump-schema', 'dump_schema')
