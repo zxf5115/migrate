@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 
 # -------------------------------------------------------------------------
 # 程序：migration.py
@@ -14,11 +14,56 @@ from ..database.mysql import Mysql
 class Migration(object):
 
 
+  def insert(self, sql, data):
+
+    return self.handle.executemany(sql, data)
+
+  # def init(self):
+
+
+
+  #   self.handle.execute(sql)
+
+
+
+  # def exists(self, version):
+
+  #   sql = "SELECT id FROM `migration` WHERE `version` = '%s' " % (version)
+
+  #   return self.handle.execute(sql)
+
+
+  # -----------------------------------------------------------------------
+  # 判断表是否存在，存在删除
+
+  def table_exists(self):
+
+    sql = r"DROP TABLE IF EXISTS `%s`;" % (self.table_name)
+
+    # 执行创建命令
+    return self.handle.execute(sql)
+
+
+
+
+
+  # -----------------------------------------------------------------------
+  # 创建表信息
+
   def create(self):
 
-    sql = "CREATE TABLE %s(%s);" % (self.table_name, self.data)
-    print(sql)
-    return self.handle.execute(sql)
+    try:
+
+      self.table_exists()
+
+      sql = r"CREATE TABLE `%s`(%s) %s" % (self.table_name, self.data, self.note)
+
+      # 执行创建命令
+      return self.handle.execute(sql)
+
+    except Exception as e:
+
+      print(e)
 
 
 
@@ -28,7 +73,7 @@ class Migration(object):
 
   def char(self, field, length, default = '', comment = ''):
 
-    self.data += " `%s` CHAR(%d) DEFAULT '%s' COMMENT '%s' " % (field, length, default, comment)
+    self.data += "`%s` CHAR(%d) DEFAULT '%s' COMMENT '%s'," % (field, length, default, comment)
 
 
 
@@ -38,7 +83,7 @@ class Migration(object):
 
   def varchar(self, field, length, default = '', comment = ''):
 
-    self.data += " `%s` VARCHAR(%d) DEFAULT '%s' COMMENT '%s', " % (field, length, default, comment)
+    self.data += "`%s` VARCHAR(%d) DEFAULT '%s' COMMENT '%s'," % (field, length, default, comment)
 
 
 
@@ -48,7 +93,7 @@ class Migration(object):
 
   def text(self, field, length, comment = ''):
 
-    self.data += " `%s` TEXT(%d) DEFAULT '%s' COMMENT '%s', " % (field, length, comment)
+    self.data += "`%s` TEXT(%d) DEFAULT '%s' COMMENT '%s'," % (field, length, comment)
 
 
   # -----------------------------------------------------------------------
@@ -56,7 +101,7 @@ class Migration(object):
 
   def tinyint(self, field, length, default = '', comment = '', is_null = 'NOT NULL'):
 
-    self.data += " `%s` TINYINT(%d) %s DEFAULT '%s' COMMENT '%s', " % (field, length, is_null, default, comment)
+    self.data += "`%s` TINYINT(%d) %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_null, default, comment)
 
 
 
@@ -66,8 +111,18 @@ class Migration(object):
 
   def integer(self, field, length, default = '', comment = '', is_null = 'NOT NULL'):
 
-    self.data += " `%s` INT(%d) %s DEFAULT '%s' COMMENT '%s', " % (field, length, is_null, default, comment)
+    self.data += "`%s` INT(%d) %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_null, default, comment)
 
+
+
+
+
+  # -----------------------------------------------------------------------
+  # 增加主键行
+
+  def primary(self, field, length, comment = ''):
+
+    self.data += "`%s` INT(%d) NOT NULL AUTO_INCREMENT COMMENT '%s'," % (field, length, comment)
 
 
 
@@ -75,9 +130,10 @@ class Migration(object):
   # -----------------------------------------------------------------------
   # 增加主键
 
-  def primary(self, field, length, comment = ''):
+  def primary_key(self, field):
 
-    self.data += " `%s` INT(%d) NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '%s', " % (field, length, comment)
+    self.data += "PRIMARY KEY (`%s`)" % (field)
+
 
 
 
@@ -99,12 +155,24 @@ class Migration(object):
   # 6、重命名字段：alter table tableName change old_field_name new_field_name new_field_type;
 
 
+  def charset(self, charset='utf8'):
+
+    self.note += " CHARSET= '%s' " % (charset)
+
+
+
+  def comment(self, comment):
+
+    self.note += " COMMENT = '%s'; " % (comment)
+
+
+
   # -----------------------------------------------------------------------
   # 创建存储类型
 
-  def engine(self, engine):
+  def engine(self, engine = 'InnoDB'):
 
-    return "ALTER TABLE %s ENGINE = %s " % (self.table_name, engine)
+    self.note += " ENGINE = '%s' DEFAULT " % (engine)
 
 
 
@@ -132,8 +200,9 @@ class Migration(object):
 
     self.table_name = table_name
     self.data = ''
-
+    self.note = ''
     self.handle = self.mysql()
+
 
 
 

@@ -8,7 +8,7 @@
 # 功能：选项类
 # -------------------------------------------------------------------------
 
-from tools.migrate.migration import Migration
+from tools.migrate.migration import *
 
 class Model(Migration):
 
@@ -19,16 +19,29 @@ class Model(Migration):
 
   def up(self):
 
+    try:
 
-    self.primary('id', 11, '自增编号')
+      self.primary('id', 11, '自增编号')
 
-    self.varchar('name', 50, '', '姓名')
+      self.varchar('name', 50, '', '姓名')
 
-    d = self.create()
+      self.primary_key('id')
 
-    print(d)
+      self.engine()
 
-    # self.engine()
+      self.charset()
+
+      self.comment('用户信息表')
+
+      self.create()
+
+      print('创建成功')
+
+    except Exception as e:
+
+      print(e)
+
+
 
 
 

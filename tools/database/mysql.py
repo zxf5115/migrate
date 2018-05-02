@@ -15,6 +15,7 @@ class Mysql(object):
 
   # -----------------------------------------------------------------------
   # 初始化方法
+
   def __init__(self, host, username, password, dbname, port=3306):
 
     # 打开数据库连接
@@ -28,6 +29,36 @@ class Mysql(object):
 
   def execute(self, sql):
 
-    conn = self.db.cursor()
+    try:
 
-    return conn.execute(sql)
+      conn = self.db.cursor()
+
+      result = conn.execute(sql)
+
+      conn.close()
+
+      return result
+
+    except Exception as e:
+
+      print(e)
+
+
+
+  def executemany(self, sql, data):
+
+    try:
+
+      conn = self.db.cursor()
+
+      conn.executemany(sql, data)
+
+      result = self.db.commit()
+
+      conn.close()
+
+      return result
+
+    except Exception as e:
+
+      print(e)

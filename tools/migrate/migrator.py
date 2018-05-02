@@ -12,6 +12,7 @@ import os
 import datetime
 import calendar
 
+from ..file.file import File
 
 class Migrator(object):
 
@@ -38,6 +39,9 @@ class Migrator(object):
 
       os.makedirs(self.directory)
 
+    self.migration()
+
+
 
 
 
@@ -46,21 +50,11 @@ class Migrator(object):
 
   def create(self, migration_name):
 
-    migrate = """
-    import migrate
+    file = File()
 
-    class CreateUsers(tools.migrate.Migration):
-      def up():
-        self.create_table('users')
-        self.string('full_name')
-        self.string('email')
-      def down():
-        self.drop_table('users')
+    migrate = file.read('config/migration.ini', migration_name = migration_name)
 
-    """
-
-
-    timestamp = calendar.timegm(datetime.datetime.utcnow().utctimetuple())
+    timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
 
     file_name = '_'.join([str(timestamp), ('%s.py' % migration_name)])
 
@@ -80,17 +74,30 @@ class Migrator(object):
   def execute(self):
 
 
+    pass
 
 
 
 
 
 
+  def migration(self):
+
+    path = r"E:\WorkSpace\Python\migrate\00000000000001_migration.py"
+
+    os.system("d:\work\Python\python %s" % (path))
 
 
 
 
+  def filename(self):
 
+    rootdir = 'E:\WorkSpace\Python\migrate\migrates'
+
+    # 列出文件夹下所有的目录与文件
+    files = os.listdir(rootdir)
+
+    print(len(files))
 
 
 
