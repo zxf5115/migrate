@@ -10,7 +10,7 @@
 
 import configparser
 
-class Conf(object):
+class Conf:
 
   def __init__(self):
 

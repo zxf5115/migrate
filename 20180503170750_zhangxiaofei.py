@@ -37,6 +37,25 @@ class Model(Migration):
 
 
 
+  # -----------------------------------------------------------------------
+  # 向migration表中添加当前版本的命令
+
+  def migration(self):
+
+    try:
+
+      timestamp = int(time.time())
+
+      sql = "insert into migration (version, create_time) values (%s,%s)"
+      data= [[__file__, timestamp]]
+
+      self.insert(sql, data)
+
+    except Exception as e:
+
+      print(e)
+
+
 
 
 
@@ -65,16 +84,12 @@ class Model(Migration):
 
       print('创建成功')
 
+      self.migration()
+      self.add()
+
     except Exception as e:
 
       print(e)
-
-    finally:
-
-      self.add()
-
-
-
 
 
   def add(self):
@@ -83,7 +98,7 @@ class Model(Migration):
 
       timestamp = int(time.time())
 
-      sql = "insert into migration (version, create_time) values (%s,%s)"
+      sql = "insert into zhangxiaofei (version, create_time) values (%s,%s)"
       data= [['00000000000001_migration.py', timestamp]]
 
       self.insert(sql, data)
@@ -96,5 +111,5 @@ class Model(Migration):
 
 if __name__ == '__main__':
 
-  model = Model('migration')
+  model = Model('zhangxiaofei')
   model.up()

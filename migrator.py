@@ -9,12 +9,12 @@
 # -------------------------------------------------------------------------
 
 import os
+import re
 import datetime
-import calendar
 
-from ..file.file import File
+from tools.file.file import File
 
-class Migrator(object):
+class Migrator:
 
   # -----------------------------------------------------------------------
   # 添加选项
@@ -29,17 +29,25 @@ class Migrator(object):
 
   def init(self):
 
-    if os.path.exists(self.directory):
+    try:
 
-      result = '"%s" already exists' % self.directory
+      # 项目目录
+      basic_path = os.getcwd()
 
-      print(result)
+      # migration 初始文件
+      filename = "00000000000001_migration.py"
 
-    else:
+      # 拼接文件绝对路径
+      path = r"%s\%s" % (basic_path, filename)
 
-      os.makedirs(self.directory)
+      # 拼接命令
+      command = "d:\work\Python\python %s %s" % (path, '')
 
-    self.migration()
+      os.system(command)
+
+    except Exception as e:
+
+      print(e)
 
 
 
@@ -60,7 +68,7 @@ class Migrator(object):
 
     path = os.path.join(self.directory, file_name)
 
-    file = open(path, 'w+')
+    file = open(path, 'w+', encoding = 'utf-8')
 
     file.write(migrate)
 
@@ -74,30 +82,42 @@ class Migrator(object):
   def execute(self):
 
 
-    pass
+    files = self.filename()
+
+    for vo in files:
+
+      print(vo)
 
 
 
-
-
-
-  def migration(self):
-
-    path = r"E:\WorkSpace\Python\migrate\00000000000001_migration.py"
-
-    os.system("d:\work\Python\python %s" % (path))
 
 
 
 
   def filename(self):
 
-    rootdir = 'E:\WorkSpace\Python\migrate\migrates'
+    try:
 
-    # 列出文件夹下所有的目录与文件
-    files = os.listdir(rootdir)
+      # 项目目录
+      basic_path = os.getcwd()
 
-    print(len(files))
+      # 列出文件夹下所有的目录与文件
+      temp = os.listdir(basic_path)
+
+      files = list(filter(lambda x: self.ismigration(x), temp))
+
+      return files
+
+    except Exception as e:
+
+      print(e)
+
+
+  def ismigration(self, filename):
+
+    pattern = r"[0-9]{14}"
+
+    return re.match(pattern, filename)
 
 
 

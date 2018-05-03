@@ -8,10 +8,10 @@
 # 功能：选项类
 # -------------------------------------------------------------------------
 
-from tools.migrate.migrator import Migrator
+from migrator import Migrator
 from tools.migrate.options import Options
 
-migrate = Migrator('migrates')
+migrate = Migrator('')
 
 # python migrate.py --init
 # python migrate.py --create-migration create_users

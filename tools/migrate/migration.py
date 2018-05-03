@@ -11,26 +11,18 @@
 from ..conf.conf import Conf
 from ..database.mysql import Mysql
 
-class Migration(object):
+class Migration:
+
+
+  def select(self, sql):
+
+    return self.handle.execute(sql)
 
 
   def insert(self, sql, data):
 
     return self.handle.executemany(sql, data)
 
-  # def init(self):
-
-
-
-  #   self.handle.execute(sql)
-
-
-
-  # def exists(self, version):
-
-  #   sql = "SELECT id FROM `migration` WHERE `version` = '%s' " % (version)
-
-  #   return self.handle.execute(sql)
 
 
   # -----------------------------------------------------------------------
@@ -38,11 +30,22 @@ class Migration(object):
 
   def table_exists(self):
 
-    sql = r"DROP TABLE IF EXISTS `%s`;" % (self.table_name)
+    try:
 
-    # 执行创建命令
-    return self.handle.execute(sql)
+      sql = r"DROP TABLE IF EXISTS `%s`;" % (self.table_name)
 
+      # 执行创建命令
+      return self.handle.execute(sql)
+
+    except Exception as e:
+
+      print(e)
+      exit()
+
+    finally:
+
+      print(111)
+      exit()
 
 
 
@@ -54,7 +57,7 @@ class Migration(object):
 
     try:
 
-      self.table_exists()
+      # self.table_exists()
 
       sql = r"CREATE TABLE `%s`(%s) %s" % (self.table_name, self.data, self.note)
 

@@ -10,7 +10,7 @@
 
 import pymysql
 
-class Mysql(object):
+class Mysql:
 
 
   # -----------------------------------------------------------------------
@@ -23,42 +23,59 @@ class Mysql(object):
 
 
 
+  # -----------------------------------------------------------------------
+  # 查询
+
+  def select(self, table, field = '*', where = "", group = "", order = ""):
+
+    # 使用cursor()方法获取操作游标
+    cursor = self.cursor()
+
+    # SQL 查询语句
+    sql = "SELECT %s FROM %s %s %s %s " % (field, table, where, group, order)
+
+    try:
+      # 执行SQL语句
+      cursor.execute(sql)
+
+      # 返回查询结果
+      return cursor.fetchall()
+    except:
+      print ("Error: unable to fetch data")
+
+    # 关闭游标
+    cursor.close()
+
+    # 关闭数据库连接
+    self.close()
+
 
   # -----------------------------------------------------------------------
   # 创建表
 
   def execute(self, sql):
 
-    try:
+    conn = self.db.cursor()
 
-      conn = self.db.cursor()
+    result = conn.execute(sql)
 
-      result = conn.execute(sql)
+    conn.close()
 
-      conn.close()
+    return result
 
-      return result
-
-    except Exception as e:
-
-      print(e)
 
 
 
   def executemany(self, sql, data):
 
-    try:
+    conn = self.db.cursor()
 
-      conn = self.db.cursor()
+    conn.executemany(sql, data)
 
-      conn.executemany(sql, data)
+    result = self.db.commit()
 
-      result = self.db.commit()
+    conn.close()
 
-      conn.close()
+    return result
 
-      return result
 
-    except Exception as e:
-
-      print(e)
