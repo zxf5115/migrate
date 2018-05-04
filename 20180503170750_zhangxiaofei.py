@@ -8,6 +8,7 @@
 # 功能：migration
 # -------------------------------------------------------------------------
 
+import os
 import time
 
 from tools.migrate.migration import Migration
@@ -21,17 +22,17 @@ class Model(Migration):
 
     super().__init__(table_name)
 
+    self.filename = os.path.basename(__file__)
+
     if self.exists():
 
       exit()
 
 
 
-
-
   def exists(self):
 
-    sql = "select id from migration where version = '%s'" % (__file__)
+    sql = "select id from migration where version = '%s'" % (self.filename)
 
     return self.select(sql)
 
@@ -47,7 +48,7 @@ class Model(Migration):
       timestamp = int(time.time())
 
       sql = "insert into migration (version, create_time) values (%s,%s)"
-      data= [[__file__, timestamp]]
+      data= [[self.filename, timestamp]]
 
       self.insert(sql, data)
 

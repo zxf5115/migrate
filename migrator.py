@@ -29,25 +29,7 @@ class Migrator:
 
   def init(self):
 
-    try:
-
-      # 项目目录
-      basic_path = os.getcwd()
-
-      # migration 初始文件
-      filename = "00000000000001_migration.py"
-
-      # 拼接文件绝对路径
-      path = r"%s\%s" % (basic_path, filename)
-
-      # 拼接命令
-      command = "d:\work\Python\python %s %s" % (path, '')
-
-      os.system(command)
-
-    except Exception as e:
-
-      print(e)
+    self.command()
 
 
 
@@ -84,9 +66,10 @@ class Migrator:
 
     files = self.filename()
 
-    for vo in files:
+    for filename in files:
 
-      print(vo)
+      self.command(filename)
+
 
 
 
@@ -124,3 +107,21 @@ class Migrator:
 
 
 
+  def command(self, filename = "00000000000001_migration.py"):
+
+    try:
+
+      # 项目目录
+      basic_path = os.getcwd()
+
+      # 拼接文件绝对路径
+      path = r"%s\%s" % (basic_path, filename)
+
+      # 拼接命令
+      command = "d:\work\Python\python %s %s" % (path, '')
+
+      os.system(command)
+
+    except Exception as e:
+
+      print(e)

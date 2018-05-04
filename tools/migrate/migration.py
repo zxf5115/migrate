@@ -16,7 +16,13 @@ class Migration:
 
   def select(self, sql):
 
-    return self.handle.execute(sql)
+    try:
+
+      return self.handle.execute(sql)
+
+    except Exception as e:
+
+      pass
 
 
   def insert(self, sql, data):
