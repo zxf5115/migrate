@@ -29,6 +29,10 @@ class Migrator:
 
   def init(self):
 
+    if not os.path.exists(self.directory):
+
+      os.makedirs(self.directory)
+
     self.command()
 
 
@@ -82,7 +86,7 @@ class Migrator:
     try:
 
       # 项目目录
-      basic_path = os.getcwd()
+      basic_path = r"%s\%s" % (os.getcwd(), self.directory)
 
       # 列出文件夹下所有的目录与文件
       temp = os.listdir(basic_path)
@@ -115,7 +119,7 @@ class Migrator:
       basic_path = os.getcwd()
 
       # 拼接文件绝对路径
-      path = r"%s\%s" % (basic_path, filename)
+      path = r"%s\%s\%s" % (basic_path, self.directory, filename)
 
       # 拼接命令
       command = "d:\work\Python\python %s %s" % (path, '')

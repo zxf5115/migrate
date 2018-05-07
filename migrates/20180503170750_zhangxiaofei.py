@@ -9,7 +9,12 @@
 # -------------------------------------------------------------------------
 
 import os
+import sys
 import time
+
+# 获得文件当前路径os.path.abspath 获得文件的父目录os.path.dirname
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
+sys.path.append(BASE_DIR)
 
 from tools.migrate.migration import Migration
 
@@ -69,13 +74,7 @@ class Model(Migration):
 
       self.primary('id', 11, '自增编号')
 
-      self.varchar('username', 50, '', '姓名')
-
-      self.varchar('password', 32, 0, '密码')
-
-      self.tinyint('sex', 1, 1, '性别')
-
-      self.tinyint('age', 3, 0, '年龄')
+      self.varchar('version', 50, '', '版本号')
 
       self.integer('create_time', 10, 0, '创建时间')
 
@@ -92,14 +91,11 @@ class Model(Migration):
       print('创建成功')
 
       self.migration()
+      self.add()
 
     except Exception as e:
 
       print(e)
-
-    finally:
-
-      self.add()
 
 
   def add(self):
@@ -108,8 +104,8 @@ class Model(Migration):
 
       timestamp = int(time.time())
 
-      sql = "insert into user (username, password, sex, age, create_time) values (%s,%s,%s,%s,%s)"
-      data= [['张晓飞','zhangxiaofei', 1, 28, timestamp],['张晓飞2','zhangxiaofei', 1, 32, timestamp]]
+      sql = "insert into zhangxiaofei (version, create_time) values (%s,%s)"
+      data= [['00000000000001_migration.py', timestamp]]
 
       self.insert(sql, data)
 
@@ -121,5 +117,5 @@ class Model(Migration):
 
 if __name__ == '__main__':
 
-  model = Model('user')
+  model = Model('zhangxiaofei')
   model.up()

@@ -11,7 +11,7 @@
 from migrator import Migrator
 from tools.migrate.options import Options
 
-migrate = Migrator('')
+migrate = Migrator('migrates')
 
 # python migrate.py --init
 # python migrate.py --create-migration create_users

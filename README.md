@@ -11,8 +11,6 @@ d:\work\Python\python migrate.py -create 【user】 创建migration文件命令 
 d:\work\Python\python migrate.py -execute 为执行migration命令
 
 # TODO
-1. 项目目录下新建一个migrates目录，将migration文件放到此目录下，会出现找不到模块问题，未解决现在把migration放到了项目下
-
-2. 部分代码使用硬编译，没有添加到配置文档中
+1. 部分代码使用硬编译，没有添加到配置文档中
 
 3. 代码未优化，后期有时间去做优化
