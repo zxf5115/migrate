@@ -195,7 +195,7 @@ class Migration:
     host, username, password, dbname, port = conf.get_mysql_conf_info()
 
     # 实例化 Mysql 对象
-    self.mysql = Mysql(host, username, password, dbname, port)
+    self.mysql = Mysql(host, username, password, dbname, int(port))
 
     return self.mysql
 

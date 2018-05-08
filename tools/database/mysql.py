@@ -19,7 +19,7 @@ class Mysql:
   def __init__(self, host, username, password, dbname, port=3306):
 
     # 打开数据库连接
-    self.db = pymysql.connect(host='127.0.0.1', port=3306, user='root', passwd='root', db='python', charset='utf8')
+    self.db = pymysql.connect(host=host, port=port, user=username, passwd=password, db=dbname, charset='utf8')
 
 
 
