@@ -100,9 +100,11 @@ class Migration:
   # -----------------------------------------------------------------------
   # 创建 text 类型 字段
 
-  def text(self, field, length, comment = ''):
+  def text(self, field, comment = ''):
 
-    self.data += "`%s` TEXT(%d) DEFAULT '%s' COMMENT '%s'," % (field, length, comment)
+    self.data += "`%s` TEXT COMMENT '%s'," % (field, comment)
+
+
 
 
   # -----------------------------------------------------------------------
