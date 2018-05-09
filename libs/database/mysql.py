@@ -9,6 +9,7 @@
 # -------------------------------------------------------------------------
 
 import pymysql
+from ..conf.conf import Conf
 
 class Mysql:
 
@@ -20,6 +21,23 @@ class Mysql:
 
     # 打开数据库连接
     self.db = pymysql.connect(host=host, port=port, user=username, passwd=password, db=dbname, charset='utf8')
+
+
+
+  @classmethod
+  def connection(self):
+
+    # 获取配置
+    conf = Conf()
+
+    # 得到mysql配置文件
+    host, username, password, dbname, port = conf.get_mysql_conf_info()
+
+    # 打开数据库连接
+    db = Mysql(host, username, password, dbname, int(port))
+
+    return db
+
 
 
 

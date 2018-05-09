@@ -8,7 +8,6 @@
 # 功能：migrate 基类
 # -------------------------------------------------------------------------
 
-from ..conf.conf import Conf
 from ..database.mysql import Mysql
 
 class Migration:
@@ -50,7 +49,6 @@ class Migration:
 
     finally:
 
-      print(111)
       exit()
 
 
@@ -80,9 +78,9 @@ class Migration:
   # -----------------------------------------------------------------------
   # 创建 char 类型 字段
 
-  def char(self, field, length, default = '', comment = ''):
+  def char(self, field, length, default = '', comment = '', is_null = 'NOT NULL'):
 
-    self.data += "`%s` CHAR(%d) DEFAULT '%s' COMMENT '%s'," % (field, length, default, comment)
+    self.data += "`%s` CHAR(%d) %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_null, default, comment)
 
 
 
@@ -90,9 +88,9 @@ class Migration:
   # -----------------------------------------------------------------------
   # 创建 varchar 类型 字段
 
-  def varchar(self, field, length, default = '', comment = ''):
+  def varchar(self, field, length, default = '', comment = '', is_null = 'NOT NULL'):
 
-    self.data += "`%s` VARCHAR(%d) DEFAULT '%s' COMMENT '%s'," % (field, length, default, comment)
+    self.data += "`%s` VARCHAR(%d) %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_null, default, comment)
 
 
 
@@ -100,19 +98,17 @@ class Migration:
   # -----------------------------------------------------------------------
   # 创建 text 类型 字段
 
-  def text(self, field, comment = ''):
+  def text(self, field, comment = '', is_null = 'NOT NULL'):
 
-    self.data += "`%s` TEXT COMMENT '%s'," % (field, comment)
-
-
+    self.data += "`%s` TEXT %s COMMENT '%s'," % (field, is_null, comment)
 
 
   # -----------------------------------------------------------------------
   # 创建 tinyint 类型 字段
 
-  def tinyint(self, field, length, default = '', comment = '', is_null = 'NOT NULL'):
+  def tinyint(self, field, length, default = '', comment = '', is_null = 'NOT NULL', is_unsigned = 'UNSIGNED'):
 
-    self.data += "`%s` TINYINT(%d) %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_null, default, comment)
+    self.data += "`%s` TINYINT(%d) %s %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_unsigned, is_null, default, comment)
 
 
 
@@ -120,9 +116,9 @@ class Migration:
   # -----------------------------------------------------------------------
   # 创建 int 类型 字段
 
-  def integer(self, field, length, default = '', comment = '', is_null = 'NOT NULL'):
+  def integer(self, field, length, default = '', comment = '', is_null = 'NOT NULL', is_unsigned = 'UNSIGNED'):
 
-    self.data += "`%s` INT(%d) %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_null, default, comment)
+    self.data += "`%s` INT(%d) %s %s DEFAULT '%s' COMMENT '%s'," % (field, length, is_unsigned, is_null, default, comment)
 
 
 
@@ -190,16 +186,10 @@ class Migration:
 
   def mysql(self):
 
-    # 获取配置
-    conf = Conf()
+    # 获取连接对象
+    conn = Mysql.connection()
 
-    # 得到mysql配置文件
-    host, username, password, dbname, port = conf.get_mysql_conf_info()
-
-    # 实例化 Mysql 对象
-    self.mysql = Mysql(host, username, password, dbname, int(port))
-
-    return self.mysql
+    return conn
 
 
   def sqlite(self):
