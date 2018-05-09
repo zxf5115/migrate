@@ -17,7 +17,7 @@ BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__),".."))
 sys.path.append(BASE_DIR)
 
 
-from tools.migrate.migration import Migration
+from libs.migrate.migration import Migration
 
 class Model(Migration):
 

@@ -8,8 +8,8 @@
 # 功能：选项类
 # -------------------------------------------------------------------------
 
-from tools.migrate.migrator import Migrator
-from tools.migrate.options import Options
+from libs.migrate.migrator import Migrator
+from libs.migrate.options import Options
 
 migrate = Migrator('migrates')
 

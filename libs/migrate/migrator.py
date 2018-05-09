@@ -12,7 +12,7 @@ import os
 import re
 import datetime
 
-from tools.file.file import File
+from ..file.file import File
 
 class Migrator:
 
